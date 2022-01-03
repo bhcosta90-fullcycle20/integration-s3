@@ -11,10 +11,14 @@ services:
         MINIO_ROOT_PASSWORD: 'miniopassword'
     volumes:
         - './data/minio:/data/minio'
-    networks:
-        - sail
     command: minio server /data/minio --console-address ":8900"
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
         retries: 3
         timeout: 5s
+    networks:
+      - integration_s3
+
+networks:
+  integration_s3:
+    driver: bridge
